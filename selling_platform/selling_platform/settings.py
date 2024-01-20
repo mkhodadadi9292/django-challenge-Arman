@@ -41,10 +41,11 @@ INSTALLED_APPS = [
     'rest_framework',
     ##
     'debug_toolbar',
+    'core',
     'seats',
     'stadium'
 ]
-
+AUTH_USER_MODEL = 'core.User'
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',

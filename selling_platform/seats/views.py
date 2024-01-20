@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from django.http import HttpResponse
 
-# Create your views here.
+@api_view()
 def say_hello(request):
-    return render('Hello world...')
+    return Response('Hello world')
