@@ -27,6 +27,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('seats/', include('seats.urls')),
 
+    # Authentication endpoints
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
+
     # Debug Tools endpoints (just for development) (it can be removed with peace of mind)
     path('__debug__/', include('debug_toolbar.urls')),
 
