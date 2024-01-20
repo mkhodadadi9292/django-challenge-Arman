@@ -1,0 +1,17 @@
+### create a new instance of User.
+POST {{url}}/auth/users/
+accept: application/json
+Content-Type: application/json
+
+{
+  "first_name": "hamed",
+  "last_name": "khodadadi",
+  "email": "hamed@hamed.com",
+  "password": "12345@mn",
+  "username": "hamed"
+}
+
+### Get current user information
+GET {{url}}/auth/users/me
+accept: application/json
+Authorization: JWT {{user_1_access}}
