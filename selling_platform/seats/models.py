@@ -6,9 +6,9 @@ from django.db import models
 class Price(models.Model):
     name = models.CharField(max_length=10)
     unit_price = models.DecimalField(
-        max_digits=3,
+        max_digits=5,
         decimal_places=2,
-        validators=[MinValueValidator(1)])
+        validators=[MinValueValidator(0.01)])
 
 
 class Seat(models.Model):
