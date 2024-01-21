@@ -25,7 +25,7 @@ schema_view = get_swagger_view(title='My API')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('seats/', include('seats.urls')),
+    path('api/', include('seats.urls')),
 
     # Authentication endpoints
     path('auth/', include('djoser.urls')),
