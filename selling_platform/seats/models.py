@@ -16,11 +16,14 @@ class Seat(models.Model):
     CANCELLED = 2
     CONFIRMED = 3
     EMPTY = 4
+    EXPIRED = 5
+
     SEAT_STATUS = [
         (RESERVED, 'RESERVED'),
         (CANCELLED, 'CANCELLED'),
         (CONFIRMED, 'CONFIRMED'),
         (EMPTY, 'EMPTY'),
+        (EXPIRED, 'EXPIRED')
     ]
     created_at = models.DateTimeField(auto_now_add=True)
     type = models.SmallIntegerField(null=False)

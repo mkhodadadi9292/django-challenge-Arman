@@ -15,3 +15,28 @@ Content-Type: application/json
 GET {{url}}/auth/users/me
 accept: application/json
 Authorization: JWT {{user_1_access}}
+
+### Create a wallet account
+POST {{url}}/api/wallet/
+accept: application/json
+Authorization: JWT {{admin_access}}
+
+{
+  "user": 4,
+  "money": 1000
+}
+
+###
+GET {{url}}/api/wallet/
+accept: application/json
+Authorization: JWT {{user_2_access}}
+
+###
+POST {{url}}/api/wallet/3/charge
+accept: application/json
+Authorization: JWT {{user_2_access}}
+
+{
+  "user": 4,
+  "money": 5000
+}

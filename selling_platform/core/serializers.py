@@ -1,4 +1,6 @@
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer, UserSerializer as BaseUserSerializer
+from rest_framework import serializers
+from .models import Wallet
 
 
 class UserCreateSerializer(BaseUserCreateSerializer):
@@ -16,4 +18,18 @@ class UserSerializer(BaseUserSerializer):
     """
 
     class Meta(BaseUserSerializer.Meta):
-        fields = ['id', 'first_name', 'last_name', 'username', 'email']
+        fields = ['id', 'first_name', 'last_name', 'username', 'email', 'wallet']
+
+
+class WalletOnlyReadSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = Wallet
+        fields = '__all__'
+
+
+class WalletOnlyWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wallet
+        fields = ['user', 'money']
