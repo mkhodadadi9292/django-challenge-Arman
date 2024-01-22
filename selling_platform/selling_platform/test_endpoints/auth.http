@@ -4,11 +4,11 @@ accept: application/json
 Content-Type: application/json
 
 {
-  "first_name": "hamed",
-  "last_name": "khodadadi",
-  "email": "hamed@hamed.com",
+  "first_name": "moon1",
+  "last_name": "moon1",
+  "email": "moon1@m.com",
   "password": "12345@mn",
-  "username": "hamed"
+  "username": "moon1"
 }
 
 ### Get current user information

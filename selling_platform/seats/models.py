@@ -6,16 +6,23 @@ from django.db import models
 class Stadium(models.Model):
     description = models.CharField(max_length=100)
 
+    def __str__(self):
+        return f"{self.description}"
+
 
 class Seat(models.Model):
     seat_number = models.IntegerField()
     stadium = models.ForeignKey(Stadium, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.seat_number=}_{self.stadium.description}"
+
 
 class Match(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    stadium = models.ManyToManyField(Stadium, related_name='match', blank=True)
+    # stadium = models.ManyToManyField(Stadium, related_name='match', blank=True)
+    stadium = models.ForeignKey(Stadium, on_delete=models.CASCADE)
 
 
 class Price(models.Model):

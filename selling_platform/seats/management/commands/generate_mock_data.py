@@ -44,11 +44,30 @@ class Command(BaseCommand):
                 start_time = fake.date_time_this_year()
                 end_time = start_time + timedelta(hours=fake.random_int(min=1, max=4))
 
-            # Create the Match instance
-            match = Match.objects.create(start_time=start_time, end_time=end_time)
+            # Create the Match instance with the associated Stadium
+            match = Match.objects.create(start_time=start_time, end_time=end_time, stadium=stadium)
 
-            # Associate the stadium with the match using .set()
-            match.stadium.set([stadium])
+    # def create_matches(self, num_matches):
+    #     import time
+    #     time.sleep(2)
+    #     stadiums = Stadium.objects.all()
+    #
+    #     for _ in range(num_matches):
+    #         start_time = fake.date_time_this_year()
+    #         end_time = start_time + timedelta(hours=fake.random_int(min=1, max=4))
+    #         stadium = fake.random_element(elements=stadiums)
+    #
+    #         # Ensure no overlapping intervals for matches in the same stadium
+    #         while Match.objects.filter(stadium=stadium, start_time__lt=end_time, end_time__gt=start_time).exists():
+    #             start_time = fake.date_time_this_year()
+    #             end_time = start_time + timedelta(hours=fake.random_int(min=1, max=4))
+    #
+    #         # Create the Match instance
+    #         match = Match.objects.create(start_time=start_time, end_time=end_time)
+    #
+    # Associate the stadium with the match using .set()
+    # match.stadium.set([stadium])
+
     def create_seats(self, num_seats):
         stadiums = Stadium.objects.all()
         for _ in range(num_seats):
@@ -96,7 +115,7 @@ class Command(BaseCommand):
             Ticket.objects.create(
                 created_at=fake.date_time_this_year(),
                 price=fake.random_element(elements=Price.objects.all()),
-                status=fake.random_element(elements=[1, 2, 3, 4]),
+                status=4,
                 user=fake.random_element(elements=[None] + list(users)),
                 match=fake.random_element(elements=Match.objects.all()),
                 seat=fake.random_element(elements=Seat.objects.all()),
