@@ -7,7 +7,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from .permissions import IsOwnerOrAdmin
 from .models import Stadium, Ticket, Seat, Match, Price
-from .serializers import TicketSerializer, SeatSerializer, StadiumSerializer, MatchSerializer
+from .serializers import PriceSerializer, TicketSerializer, SeatSerializer, StadiumSerializer, MatchSerializer
 
 
 #
@@ -56,7 +56,7 @@ class TicketViewSet(viewsets.ModelViewSet):
                 ticket.save()
                 # Following function will run in background in order to convert the reserved ticket to EMPTY status
                 # (ticket are not available for reservation)
-                #initiate_conversion(ticket.id)
+                # initiate_conversion(ticket.id)
 
                 return Response({'message': 'Ticket reserved successfully'}, status=status.HTTP_200_OK)
             else:
@@ -84,15 +84,43 @@ class TicketViewSet(viewsets.ModelViewSet):
 class StadiumViewSet(viewsets.ModelViewSet):
     queryset = Stadium.objects.all()
     serializer_class = StadiumSerializer
-    permission_classes = [permissions.IsAdminUser]
+
+    # permission_classes = [permissions.IsAdminUser]
+    def get_permissions(self):
+        if self.request.method in ['GET', 'OPTIONS']:
+            return [permissions.IsAuthenticated()]
+        else:
+            return [permissions.IsAdminUser()]
 
 
 class SeatViewSet(viewsets.ModelViewSet):
     queryset = Seat.objects.all()
     serializer_class = SeatSerializer
 
+    def get_permissions(self):
+        if self.request.method in ['GET', 'OPTIONS']:
+            return [permissions.IsAuthenticated()]
+        else:
+            return [permissions.IsAdminUser()]
+
 
 class MatchViewSet(viewsets.ModelViewSet):
     queryset = Match.objects.all()
     serializer_class = MatchSerializer
-    permission_classes = [permissions.IsAdminUser]
+
+    def get_permissions(self):
+        if self.request.method in ['GET', 'OPTIONS']:
+            return [permissions.IsAuthenticated()]
+        else:
+            return [permissions.IsAdminUser()]
+
+
+class PriceViewSet(viewsets.ModelViewSet):
+    queryset = Price.objects.all()
+    serializer_class = PriceSerializer
+
+    def get_permissions(self):
+        if self.request.method in ['GET', 'OPTIONS']:
+            return [permissions.IsAuthenticated()]
+        else:
+            return [permissions.IsAdminUser()]

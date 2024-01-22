@@ -22,6 +22,12 @@ class SeatSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PriceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Price
+        fields = '__all__'
+
+
 class MatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match

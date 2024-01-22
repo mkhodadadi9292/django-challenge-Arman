@@ -27,6 +27,8 @@ class WalletViewSet(ListModelMixin,
         return WalletOnlyReadSerializer
 
     def get_permissions(self):
+        if self.action == 'list':
+            return [IsAdminUser()]
         if (self.action in ['purchase', 'charge']) or (self.request.method in ['GET', 'OPTIONS']):
             return [IsOwnerOrAdmin()]
         else:
@@ -36,7 +38,6 @@ class WalletViewSet(ListModelMixin,
     def charge(self, request, pk=None):
         wallet = self.get_object()
         self.check_object_permissions(request, wallet)
-        # TODO: much better to handle inside the related serializer.
         amount = request.data.get('money', 0)
         wallet.money += amount
         wallet.save()

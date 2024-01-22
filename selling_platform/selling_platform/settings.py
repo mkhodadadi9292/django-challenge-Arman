@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'core',
     'seats',
-    'stadium'
 ]
 AUTH_USER_MODEL = 'core.User'
 MIDDLEWARE = [
