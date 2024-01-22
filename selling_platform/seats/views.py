@@ -54,8 +54,10 @@ class TicketViewSet(viewsets.ModelViewSet):
                 ticket.status = Ticket.RESERVED
                 ticket.user = user
                 ticket.save()
-                #
-                initiate_conversion(ticket.id)
+                # Following function will run in background in order to convert the reserved ticket to EMPTY status
+                # (ticket are not available for reservation)
+                #initiate_conversion(ticket.id)
+
                 return Response({'message': 'Ticket reserved successfully'}, status=status.HTTP_200_OK)
             else:
                 return Response({'error': 'Ticket is not available for reservation'},
