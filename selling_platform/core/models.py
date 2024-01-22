@@ -3,7 +3,7 @@ from django.utils.translation import gettext as _
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.db import models
-from seats.models import Seat
+from seats.models import Ticket
 
 
 class User(AbstractUser):
@@ -22,4 +22,4 @@ class TransactionHistory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     amount = models.IntegerField(_('amount'))
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    seats = models.ManyToManyField(Seat, related_name='transaction_history', blank=True, null=True)
+    ticket = models.ManyToManyField(Ticket, related_name='transaction_history', blank=True, null=True)

@@ -11,7 +11,7 @@ class Price(models.Model):
         validators=[MinValueValidator(0.01)])
 
 
-class Seat(models.Model):
+class Ticket(models.Model):
     RESERVED = 1
     CANCELLED = 2
     CONFIRMED = 3
@@ -26,7 +26,7 @@ class Seat(models.Model):
         (EXPIRED, 'EXPIRED')
     ]
     created_at = models.DateTimeField(auto_now_add=True)
-    type = models.SmallIntegerField(null=False)
+    # type = models.SmallIntegerField(null=False)
     price = models.ForeignKey(
         Price, on_delete=models.CASCADE)
     status = models.IntegerField(

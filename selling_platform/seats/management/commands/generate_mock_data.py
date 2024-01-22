@@ -2,7 +2,7 @@
 from django.core.management.base import BaseCommand
 from faker import Faker
 from django.contrib.auth import get_user_model
-from seats.models import Price, Seat
+from seats.models import Price, Ticket
 
 fake = Faker()
 
@@ -41,12 +41,12 @@ class Command(BaseCommand):
                 unit_price=fake.pydecimal(left_digits=3, right_digits=2, positive=True),
             )
 
-        # Create Seat instances
+        # Create Ticket instances
         users = get_user_model().objects.all()
         for _ in range(num_seats):
-            Seat.objects.create(
+            Ticket.objects.create(
                 created_at=fake.date_time_this_year(),
-                type=fake.random_int(min=1, max=5),
+                # type=fake.random_int(min=1, max=5),
                 price=fake.random_element(elements=Price.objects.all()),
                 status=fake.random_element(elements=[1, 2, 3, 4]),
                 user=fake.random_element(elements=[None] + list(users)),

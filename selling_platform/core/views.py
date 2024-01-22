@@ -11,19 +11,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import Wallet, TransactionHistory
 from .serializers import WalletOnlyReadSerializer, WalletOnlyWriteSerializer
 from .permissions import IsOwnerOrAdmin
-from seats.models import Seat
-
-
-#
-# def get_queryset(self):
-#     user = self.request.user
-#
-#     if user.is_staff:
-#         return Order.objects.all()
-#
-#     customer_id = Customer.objects.only(
-#         'id').get(user_id=user.id)
-#     return Order.objects.filter(customer_id=customer_id)
+from seats.models import Ticket
 
 
 class WalletViewSet(ListModelMixin,
@@ -64,7 +52,7 @@ class WalletViewSet(ListModelMixin,
         try:
             with transaction.atomic():
                 # Fetch reserved seats for the user
-                reserved_seats = Seat.objects.filter(user=request.user, status=Seat.RESERVED)
+                reserved_seats = Ticket.objects.filter(user=request.user, status=Ticket.RESERVED)
 
                 # Step 1: Calculate the total price of RESERVED seats owned by the user
                 total_price_reserved_seats = reserved_seats.aggregate(total_price=Sum('price__unit_price'))[
@@ -78,14 +66,14 @@ class WalletViewSet(ListModelMixin,
                     raise ValueError('Insufficient funds in the wallet')
 
                 # Step 3: Change the status of RESERVED seats to CONFIRMED
-                Seat.objects.filter(user=request.user, status=Seat.RESERVED).update(status=Seat.CONFIRMED)
+                Ticket.objects.filter(user=request.user, status=Ticket.RESERVED).update(status=Ticket.CONFIRMED)
 
                 # Step 4: Log the transaction history
                 transaction_records = TransactionHistory.objects.create(
                     amount=total_price_reserved_seats,
                     user=request.user
                 )
-                transaction_records.seats.set(reserved_seats.all())
+                transaction_records.ticket.set(reserved_seats)
 
                 return Response({'message': 'Purchase successful'}, status=status.HTTP_200_OK)
 
