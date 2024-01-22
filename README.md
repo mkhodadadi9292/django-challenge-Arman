@@ -31,7 +31,9 @@ you're committing your code often with a proper commit message.
 - Redis has been applied as message broker and cache system
 - Celery has been applied as task queue
 - MySQL or Sqlite has been applied as database (default database is `MySQL`)
+
 ## ---------------------------------------
+
 ## Installation
 
 - activate virtualenv
@@ -78,10 +80,13 @@ you're committing your code often with a proper commit message.
 - Transaction table is available in order to see the details.
 
 ## Important Note:
+
 - ERD diagram is available beside the current file.
+- There is prepared command to populate database with mock data.(this data is not sensible necessarily) you can run
+  through `python manage.py generate_mock_data `
 - all important endpoints like reservation and purchase are done through transaction mode.
 - at the `\reserve` initiate_conversion(ticket.id) method is deactivated.
-- I think there are some other ways to handle reserved tickets without purchasing (we can call it orphan ticket) (like crone jobs,
-- or event handlers builtin PostgreSQL or MySQL)
+- I think there are some other ways to handle reserved tickets without purchasing (we can call it orphan ticket) like
+  crone jobs, or event handlers builtin PostgreSQL or MySQL.
 - If have much more time I would implement throttling (In order to secure endpoints) , pagination and design useful
   endpoints
