@@ -7,7 +7,8 @@ from .models import Seat, Price
 from .serializers import SeatSerializer
 
 
+# from ..core.permissions import IsOwnerOrAdmin
+
 class SeatViewSet(viewsets.ModelViewSet):
     queryset = Seat.objects.all()
     serializer_class = SeatSerializer
-
