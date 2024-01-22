@@ -3,8 +3,23 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 
+class Stadium(models.Model):
+    description = models.CharField(max_length=100)
+
+
+class Seat(models.Model):
+    seat_number = models.IntegerField()
+    stadium = models.ForeignKey(Stadium, on_delete=models.CASCADE)
+
+
+class Match(models.Model):
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    stadium = models.ManyToManyField(Stadium, related_name='match', blank=True)
+
+
 class Price(models.Model):
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=20)
     unit_price = models.DecimalField(
         max_digits=5,
         decimal_places=2,
@@ -26,10 +41,12 @@ class Ticket(models.Model):
         (EXPIRED, 'EXPIRED')
     ]
     created_at = models.DateTimeField(auto_now_add=True)
-    # type = models.SmallIntegerField(null=False)
     price = models.ForeignKey(
         Price, on_delete=models.CASCADE)
     status = models.IntegerField(
         max_length=1, choices=SEAT_STATUS, default=EMPTY)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    match = models.ForeignKey(Match, on_delete=models.PROTECT)
+    seat = models.ForeignKey(Seat, on_delete=models.PROTECT)
+    stadium = models.ForeignKey(Stadium, on_delete=models.PROTECT)
