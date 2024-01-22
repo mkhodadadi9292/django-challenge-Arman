@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from celery import shared_task
 from django.db import transaction
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,6 +8,27 @@ from rest_framework.decorators import action
 from .permissions import IsOwnerOrAdmin
 from .models import Stadium, Ticket, Seat, Match, Price
 from .serializers import TicketSerializer, SeatSerializer, StadiumSerializer, MatchSerializer
+
+
+#
+@shared_task
+def convert_reserved_to_empty(ticket_id):
+    try:
+        # Get the ticket
+        ticket = Ticket.objects.get(id=ticket_id)
+        # Check if the ticket is still in the reserved state
+        if ticket.status == 'Reserved':
+            # Change the status to 'Empty'
+            ticket.status = 'Empty'
+            ticket.save()
+
+    except Ticket.DoesNotExist:
+        # Handle the case where the ticket no longer exists
+        pass
+
+
+def initiate_conversion(ticket_id):
+    transaction.on_commit(lambda: convert_reserved_to_empty.apply_async((ticket_id,), countdown=300))
 
 
 class TicketViewSet(viewsets.ModelViewSet):
@@ -32,7 +54,8 @@ class TicketViewSet(viewsets.ModelViewSet):
                 ticket.status = Ticket.RESERVED
                 ticket.user = user
                 ticket.save()
-
+                #
+                initiate_conversion(ticket.id)
                 return Response({'message': 'Ticket reserved successfully'}, status=status.HTTP_200_OK)
             else:
                 return Response({'error': 'Ticket is not available for reservation'},
