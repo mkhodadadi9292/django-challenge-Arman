@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: django-container
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    environment:
+      - DJANGO_SETTINGS_MODULE=your_project_name.settings.production
+    # Add other Django service configurations here
+
+  redis:
+    image: "redis:latest"
+    container_name: redis-container
+    ports:
+      - "6379:6379"
+
+  celery:
+    image: your-django-image:latest
+    container_name: celery-container
+    depends_on:
+      - django
+      - redis
+    command: celery -A your_project_name worker -l info
+    # Replace "your_project_name" with the actual name of your Django project
+    # Add other Celery service configurations here

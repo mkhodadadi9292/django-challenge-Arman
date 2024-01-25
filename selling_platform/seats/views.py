@@ -17,9 +17,9 @@ def convert_reserved_to_empty(ticket_id):
         # Get the ticket
         ticket = Ticket.objects.get(id=ticket_id)
         # Check if the ticket is still in the reserved state
-        if ticket.status == 'Reserved':
+        if ticket.status == Ticket.RESERVED:
             # Change the status to 'Empty'
-            ticket.status = 'Empty'
+            ticket.status = Ticket.EMPTY
             ticket.save()
 
     except Ticket.DoesNotExist:
@@ -28,7 +28,8 @@ def convert_reserved_to_empty(ticket_id):
 
 
 def initiate_conversion(ticket_id):
-    transaction.on_commit(lambda: convert_reserved_to_empty.apply_async((ticket_id,), countdown=300))
+    transaction.on_commit(lambda: convert_reserved_to_empty.apply_async((ticket_id,), countdown=20))
+    # convert_reserved_to_empty.apply_async(args=[ticket_id], countdown=10)
 
 
 class TicketViewSet(viewsets.ModelViewSet):
@@ -56,7 +57,7 @@ class TicketViewSet(viewsets.ModelViewSet):
                 ticket.save()
                 # Following function will run in background in order to convert the reserved ticket to EMPTY status
                 # (ticket are not available for reservation)
-                # initiate_conversion(ticket.id)
+                initiate_conversion(ticket.id)
 
                 return Response({'message': 'Ticket reserved successfully'}, status=status.HTTP_200_OK)
             else:
