@@ -19,9 +19,10 @@ EXPOSE 8000
 
 # Migrate the database
 RUN python manage.py migrate
+# Populate the database (you might adjust this command based on your needs)
+RUN python manage.py generate_mock_data
 
 # Run Django development server
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
-# Populate the database (you might adjust this command based on your needs)
-RUN python manage.py generate_mock_data
+
