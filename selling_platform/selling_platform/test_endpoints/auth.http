@@ -11,6 +11,14 @@ Content-Type: application/json
   "username": "moon1"
 }
 
+### geenrate jwt tokens
+POST {{url}}/auth/jwt/create
+accept: application/json
+Content-Type: application/json
+
+{"username": "moon1",
+  "password": "12345@mn"}
+
 ### Get current user information
 GET {{url}}/auth/users/me
 accept: application/json

@@ -144,12 +144,12 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=4),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=400),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=100),
     'AUTH_HEADER_TYPES': ('JWT',),
 
 }
-#### AUTH #####################################
+######################### DJOSER #########################################
 DJOSER = {
     'SERIALIZERS': {
         'user_create': 'core.serializers.UserCreateSerializer',
@@ -158,7 +158,7 @@ DJOSER = {
     }
 }
 
-#################### Celery Configuration
+#################### Celery Configuration #################################
 import os
 
 CELERY_BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')  # or 'pyamqp://guest:guest@localhost//'
