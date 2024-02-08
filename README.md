@@ -51,7 +51,7 @@ you're committing your code often with a proper commit message.
 - Ensure that the database and redis are installed and available.
 - Run these commands in separate shells in the same python virtualenv.
 
-1) `celery -A position worker -l info -P gevent`
+1) `celery -A seats worker -l info -P gevent`
 2) in development mode (`python manage.py runserver`), but you are able to use gunicorne or uwsgi
 
 ## Admin Panel

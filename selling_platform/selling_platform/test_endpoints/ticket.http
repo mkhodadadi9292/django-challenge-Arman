@@ -4,8 +4,8 @@ accept: application/json
 Authorization: JWT {{user_2_access}}
 
 
-###
-PUT {{url}}/api/ticket/1/reserve
+### reseve tickets.
+PUT {{url}}/api/ticket/12/reserve/
 accept: application/json
 Authorization: JWT {{user_2_access}}
 
@@ -20,7 +20,8 @@ Authorization: JWT {{user_2_access}}
   "stadium": 4
 }
 
+
 ### get list of tickets
-GET {{url}}/api/ticket/1/
+GET {{url}}/api/ticket/11/
 accept: application/json
 Authorization: JWT {{user_2_access}}

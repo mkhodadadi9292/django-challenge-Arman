@@ -22,7 +22,7 @@ Content-Type: application/json
 ### Get current user information
 GET {{url}}/auth/users/me
 accept: application/json
-Authorization: JWT {{user_2_access}}
+Authorization: JWT {{user_3_access}}
 
 ### Create a wallet account
 POST {{url}}/api/wallet/
@@ -30,7 +30,7 @@ accept: application/json
 Authorization: JWT {{admin_access}}
 
 {
-  "user": 2,
+  "user": 3,
   "money": 20000
 }
 
@@ -40,12 +40,12 @@ accept: application/json
 Authorization: JWT {{user_2_access}}
 
 ###
-POST {{url}}/api/wallet/3/charge
+POST {{url}}/api/wallet/1/charge/
 accept: application/json
-Authorization: JWT {{user_2_access}}
+Authorization: JWT {{admin_access}}
 
 {
-  "user": 4,
+  "user": 3,
   "money": 5000
 }
 

@@ -1,15 +1,15 @@
 version: '3'
 
 services:
-  django:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: django-container
-    ports:
-      - "8000:8000"
-    depends_on:
-      - redis
+#  django:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: django-container
+#    ports:
+#      - "8000:8000"
+#    depends_on:
+#      - redis
 
 
   redis:
@@ -22,6 +22,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.celery
+    container_name: celery-worker
     environment:
       - BROKER_URL=redis://redis:6379
       - RESULT_BACKEND=redis://redis:6379
