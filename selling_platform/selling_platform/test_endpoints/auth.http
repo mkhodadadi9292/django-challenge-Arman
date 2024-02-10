@@ -11,7 +11,7 @@ Content-Type: application/json
   "username": "moon1"
 }
 
-### geenrate jwt tokens
+### genrate jwt tokens
 POST {{url}}/auth/jwt/create
 accept: application/json
 Content-Type: application/json
