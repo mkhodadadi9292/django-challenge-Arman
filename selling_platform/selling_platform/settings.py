@@ -108,6 +108,16 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
+print("\n************11111111111111*******************\n")
+print(DATABASES['default']['HOST'])
+print(os.environ.get('DB_HOST', 'iiiiiiiiiiii'))
+import pprint
+pprint.pprint(os.environ)
+print("\nbbbbbbbbbbbbbbbbbbbbb\n")
+print(os.environ.get('POSTGRES_PASSWORD'))
+print("\nbbbbbbbbbbbbbbbbbbbbb\n")
+print("\n*************11111111111111******************\n")
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

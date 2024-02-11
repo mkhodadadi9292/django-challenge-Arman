@@ -1,15 +1,6 @@
 version: '3'
 
 services:
-#  django:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    container_name: django-container
-#    ports:
-#      - "8000:8000"
-#    depends_on:
-#      - redis
 
 
   redis:
@@ -17,6 +8,8 @@ services:
     container_name: redis-container
     ports:
       - "6379:6379"
+    networks:
+      - djangonetwork
 
   db:
     image: postgres:12.4
@@ -29,7 +22,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+    networks:
+      - djangonetwork
 
   worker:
     build:
@@ -42,14 +36,41 @@ services:
     depends_on:
       - redis
       - db
+    networks:
+      - djangonetwork
+
   flower:
     image: mher/flower:0.9.7
-    command: ['flower', '--broker=redis://redis:6379', '--port=5555']
+    command: [ 'flower', '--broker=redis://redis:6379', '--port=5555' ]
     ports:
       - "5557:5555"
     depends_on:
       - redis
+    networks:
+      - djangonetwork
 
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: django-container
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "8000:8000"
+#    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+      - redis
+      - worker
+    env_file:
+      - .env
+    networks:
+      - djangonetwork
 
 volumes:
   postgres_data:
+
+networks:
+  djangonetwork:
+    driver: bridge

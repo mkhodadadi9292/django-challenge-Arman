@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.8
+FROM python:3.10
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -12,17 +12,20 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt .
+
+RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
 
-# Migrate the database
-RUN python manage.py migrate
-# Populate the database (you might adjust this command based on your needs)
-RUN python manage.py generate_mock_data
+# Copy the entrypoint script into the container
+COPY entrypoint.sh /app
 
-# Run Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Grant execute permissions to the script
+RUN chmod +x /app/entrypoint.sh
+
+# Run the entrypoint script
+CMD ["/app/entrypoint.sh"]
 
 
