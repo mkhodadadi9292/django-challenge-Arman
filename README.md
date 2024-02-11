@@ -86,7 +86,7 @@ you're committing your code often with a proper commit message.
   through `python manage.py generate_mock_data `
 - all important endpoints like reservation and purchase are done through transaction mode.
 - at the `\reserve` initiate_conversion(ticket.id) method is deactivated.
-- I think there are some other ways to handle reserved tickets without purchasing (we can call it orphan ticket) like
-  crone jobs, or event handlers builtin PostgreSQL or MySQL.
-- If have much more time I would implement throttling (In order to secure endpoints) , pagination and design useful
-  endpoints
+## Useful links
+- https://testdriven.io/blog/docker-best-practices/
+- https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
+- https://stackoverflow.com/questions/51750715/could-not-translate-host-name-db-to-address-using-postgres-docker-compose-and
