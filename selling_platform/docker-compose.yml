@@ -49,22 +49,36 @@ services:
     networks:
       - djangonetwork
 
-  django:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: django-container
-    environment:
-      - POSTGRES_PASSWORD=postgres
+  #  django:
+  #    build:
+  #      context: .
+  #      dockerfile: Dockerfile
+  #    container_name: django-container
+  #    environment:
+  #      - POSTGRES_PASSWORD=postgres
+  #    ports:
+  #      - "8000:8000"
+  ##    command: python manage.py runserver 0.0.0.0:8000
+  #    depends_on:
+  #      - db
+  #      - redis
+  #      - worker
+  #    env_file:
+  #      - .env
+  #    networks:
+  #      - djangonetwork
+
+
+  rabbitmq:
+    image: "rabbitmq:latest"
     ports:
-      - "8000:8000"
-#    command: python manage.py runserver 0.0.0.0:8000
-    depends_on:
-      - db
-      - redis
-      - worker
+      - "5672:5672"  # RabbitMQ default port
+      - "15672:15672"  # RabbitMQ Management UI port
     env_file:
       - .env
+#    environment:
+#      RABBITMQ_DEFAULT_USER: "your_username"
+#      RABBITMQ_DEFAULT_PASS: "your_password"
     networks:
       - djangonetwork
 
