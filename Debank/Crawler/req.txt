@@ -1,0 +1,4 @@
+selenium==4.18.1
+selenium-wire==5.1.0
+selenium-wire==5.1.0
+loguru==0.7.2

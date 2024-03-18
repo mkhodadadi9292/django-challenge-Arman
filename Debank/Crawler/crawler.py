@@ -1,12 +1,14 @@
 import time
 import pandas as pd
-from selenium import webdriver
 from selenium.webdriver import Chrome
+import json
+from selenium import webdriver
 from selenium.webdriver.common.by import By
+from loguru import logger
+import sqlite3
 
-
-def fetch_page():
-    url = "https://debank.com/profile/0x6982508145454ce325ddbe47a25d4ec3d2311933"
+def fetch_page(profile_id):
+    url = f"https://debank.com/profile/{profile_id}"
     # driver = webdriver.Chrome()
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
@@ -15,23 +17,19 @@ def fetch_page():
     driver.implicitly_wait(10)
     driver.get(url)
 
-    import time
     time.sleep(15)
 
     elements = driver.find_elements(By.TAG_NAME, 'body')
 
-    with open('y.http', 'w') as f:
+    with open(f'output/raw_result/{profile_id}.http', 'w') as f:
         f.write(elements[0].text)
 
     result = elements[0].text
     driver.quit()
-    # for sub_element in elements:
-    #     print(sub_element.text)
     return result
 
 
-def convert_to_json(text):
-    import json
+def convert_to_json(text, profile_id):
     output = []
     indicator = {'token', 'price', 'amount', 'usd value'}
     lines = [line.strip() for line in text.split('\n')]
@@ -43,9 +41,18 @@ def convert_to_json(text):
     if target_line_index > 0:
         for j in range(target_line_index, len(lines) - 4, 4):
             output.append([x.strip() for x in lines[j:j + 4]])
-    with open('output1.json', 'w') as f:
+    with open(f'output/json_result/{profile_id}.json', 'w') as f:
         json.dump(output, f)
     return output
 
+
 if __name__ == "__main__":
-    convert_to_json(fetch_page())
+    with open('wallet_list', 'r') as f:
+        try:
+            for profile_id in f:
+                _profile_id = profile_id.strip()
+                text = fetch_page(profile_id=_profile_id)
+                convert_to_json(text=text, profile_id=_profile_id)
+
+        except Exception as err:
+            logger.error(f"{profile_id=}, error_message={err}")
