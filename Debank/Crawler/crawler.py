@@ -42,17 +42,28 @@ def convert_to_json(text, profile_id):
         for j in range(target_line_index, len(lines) - 4, 4):
             output.append([x.strip() for x in lines[j:j + 4]])
     with open(f'output/json_result/{profile_id}.json', 'w') as f:
-        json.dump(output, f)
+        json.dump(output, f, indent=4)
     return output
 
 
 if __name__ == "__main__":
+    from repository import Repository
     with open('wallet_list', 'r') as f:
         try:
             for profile_id in f:
+                repo = Repository(db_path='db')
                 _profile_id = profile_id.strip()
                 text = fetch_page(profile_id=_profile_id)
                 convert_to_json(text=text, profile_id=_profile_id)
 
+                # When status code is set to 1, it means that
+                # the profile data has already  fetched and processed correctly.
+
+                with repo.connection:
+                    repo.write_status(profile_id=_profile_id, status=1)
+                logger.info(f"profile_id: {profile_id} fetched successfully")
+
         except Exception as err:
+            with repo.connection:
+                repo.write_status(profile_id=_profile_id, status=0)
             logger.error(f"{profile_id=}, error_message={err}")
